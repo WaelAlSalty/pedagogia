@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Berçário - Recursos Pedagógicos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-rose-50 text-slate-800 font-sans min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-rose-500 text-white shadow-md">
+    <div class="max-w-5xl mx-auto px-4 py-6 text-center">
+      <h1 class="text-3xl font-bold mb-1"><i class="fa-solid fa-baby-carriage mr-2"></i>Portal Interativo do Berçário</h1>
+      <p class="text-rose-100 text-sm">Ferramentas de planejamento, rotina e relatórios para Educação Infantil (0 a 3 anos)</p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Navegação por Abas -->
+    <div class="flex justify-center space-x-2 border-b border-rose-200 mb-6 pb-2">
+      <button onclick="switchTab('atividades')" id="btn-atividades" class="tab-btn bg-rose-600 text-white px-4 py-2 rounded-lg font-medium shadow transition">
+        <i class="fa-solid fa-shapes mr-2"></i>Atividades BNCC
+      </button>
+      <button onclick="switchTab('rotina')" id="btn-rotina" class="tab-btn bg-white text-rose-600 hover:bg-rose-100 px-4 py-2 rounded-lg font-medium shadow transition">
+        <i class="fa-solid fa-clock mr-2"></i>Diário de Rotina
+      </button>
+      <button onclick="switchTab('relatorio')" id="btn-relatorio" class="tab-btn bg-white text-rose-600 hover:bg-rose-100 px-4 py-2 rounded-lg font-medium shadow transition">
+        <i class="fa-solid fa-file-pen mr-2"></i>Gerador de Relatórios
+      </button>
+    </div>
+
+    <!-- ABA 1: ATIVIDADES -->
+    <section id="tab-atividades" class="tab-content">
+      <div class="bg-white p-4 rounded-xl shadow mb-6">
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Filtrar por Faixa Etária:</label>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterAge('todas')" class="age-btn bg-rose-500 text-white px-3 py-1.5 rounded-full text-sm font-medium">Todas</button>
+          <button onclick="filterAge('0-6m')" class="age-btn bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded-full text-sm font-medium">0 a 6 meses</button>
+          <button onclick="filterAge('6-12m')" class="age-btn bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded-full text-sm font-medium">6 a 12 meses</button>
+          <button onclick="filterAge('1-2a')" class="age-btn bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded-full text-sm font-medium">1 a 2 anos</button>
+          <button onclick="filterAge('2-3a')" class="age-btn bg-rose-100 text-rose-700 hover:bg-rose-200 px-3 py-1.5 rounded-full text-sm font-medium">2 a 3 anos</button>
+        </div>
+      </div>
+
+      <div id="grid-atividades" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Inserido dinamicamente pelo JS -->
+      </div>
+    </section>
+
+    <!-- ABA 2: DIÁRIO DE ROTINA -->
+    <section id="tab-rotina" class="tab-content hidden">
+      <div class="bg-white p-6 rounded-xl shadow max-w-2xl mx-auto">
+        <h2 class="text-xl font-bold text-rose-600 mb-4 border-b pb-2"><i class="fa-solid fa-clipboard-list mr-2"></i>Registro Diário do Bebê</h2>
+        
+        <form id="routine-form" onsubmit="addRoutineLog(event)" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Nome da Criança</label>
+            <input type="text" id="child-name" required placeholder="Ex: Bebê Lucas" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Alimentação</label>
+              <select id="food-status" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+                <option value="Mamou bem / Comeu tudo">Mamou bem / Comeu tudo</option>
+                <option value="Comeu parcialmente">Comeu parcialmente</option>
+                <option value="Recusou a refeição">Recusou a refeição</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Sono</label>
+              <select id="sleep-status" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+                <option value="Dormiu tranquilamente">Dormiu tranquilamente</option>
+                <option value="Sono agitado">Sono agitado</option>
+                <option value="Não dormiu">Não dormiu</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-1">Fralda</label>
+              <select id="diaper-status" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+                <option value="Xixi (Normal)">Xixi (Normal)</option>
+                <option value="Cocô (Normal)">Cocô (Normal)</option>
+                <option value="Evacuação alterada">Evacuação alterada</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Observação Pedagógica / Recado para os Pais</label>
+            <textarea id="routine-note" rows="3" placeholder="Ex: Hoje demonstrou muito interesse pelo painel sensorial e interagiu bem com os colegas." class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 rounded-lg shadow transition">
+            Gerar Ficha de Rotina
+          </button>
+        </form>
+
+        <div id="routine-output" class="mt-6 hidden bg-rose-50 border border-rose-200 p-4 rounded-lg">
+          <h3 class="font-bold text-rose-700 mb-2">Ficha de Rotina Gerada:</h3>
+          <div id="routine-text" class="text-sm text-slate-700 whitespace-pre-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABA 3: RELATÓRIO DESCRITIVO -->
+    <section id="tab-relatorio" class="tab-content hidden">
+      <div class="bg-white p-6 rounded-xl shadow max-w-2xl mx-auto">
+        <h2 class="text-xl font-bold text-rose-600 mb-4 border-b pb-2"><i class="fa-solid fa-feather mr-2"></i>Auxiliar de Relatório de Desenvolvimento</h2>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Aspecto do Desenvolvimento</label>
+            <select id="report-aspect" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+              <option value="socioemocional">Desenvolvimento Socioemocional & Interação</option>
+              <option value="motor">Desenvolvimento Motor & Expressão Corporal</option>
+              <option value="linguagem">Linguagem & Comunicação</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Nível de Progresso Observado</label>
+            <select id="report-level" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-rose-400 outline-none">
+              <option value="autonomo">Em processo avançado / Boa autonomia</option>
+              <option value="desenvolvimento">Em pleno desenvolvimento com apoio</option>
+              <option value="inicial">Fase inicial de adaptação / Requer mediação constante</option>
+            </select>
+          </div>
+
+          <button onclick="generateReport()" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 rounded-lg shadow transition">
+            Gerar Sugestão de Parágrafo
+          </button>
+
+          <div id="report-output" class="mt-4 hidden p-4 bg-slate-50 border rounded-lg">
+            <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Texto Sugerido para o Relatório:</h4>
+            <p id="report-text" class="text-sm text-slate-700 leading-relaxed italic"></p>
+            <button onclick="copyReport()" class="mt-3 text-xs bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold px-3 py-1 rounded transition">
+              <i class="fa-regular fa-copy mr-1"></i>Copiar Texto
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script JS Interativo -->
+  <script>
+    const atividades = [
+      {
+        id: 1,
+        faixa: "0-6m",
+        titulo: "Garrafas Sensoriais Mágicas",
+        bncc: "EI01EO02 (Outros e o nós)",
+        objetivo: "Estimular o rastreio visual, a curiosidade e o foco de atenção dos bebês.",
+        materiais: "Garrafas PET pequenas transparentes, água, glitter, miçangas e óleo de bebê.",
+        passo: "Encha as garrafas com água e glitter. Sele bem as tampas com cola quente. Deixe os bebês deitados de bruços (Tummy Time) observando os elementos em movimento."
+      },
+      {
+        id: 2,
+        faixa: "6-12m",
+        titulo: "Cesto de Tesouros Naturais",
+        bncc: "EI01ET01 (Espaços, tempos, quantidades)",
+        objetivo: "Explorar diferentes texturas, temperaturas e formas através do tato.",
+        materiais: "Cesto baixo de palha, colheres de madeira, pinhas, pedaços de tecido, conchas grandes.",
+        passo: "Aos bebês sentados com firmeza, ofereça o cesto para livre exploração. Deixe que peguem, sintam as texturas e façam suas descobertas de forma autônoma."
+      },
+      {
+        id: 3,
+        faixa: "1-2a",
+        titulo: "Caminho Tátil e Equilíbrio",
+        bncc: "EI01CG02 (Corpo, gestos e movimentos)",
+        objetivo: "Desenvolver o equilíbrio, a coordenação motora ampla e a percepção sensorial nos pés.",
+        materiais: "Placas de EVA com texturas coladas (plástico bolha, algodão, lixa suave, grama sintética).",
+        passo: "Monte um circuito no chão da sala. Incentive as crianças a caminharem descalças pelo percurso segurando na mão da professora ou de forma livre."
+      },
+      {
+        id: 4,
+        faixa: "2-3a",
+        titulo: "Pintura com Gelo Colorido",
+        bncc: "EI02TS02 (Traços, sons, cores e formas)",
+        objetivo: "Explorar transformação de estados da matéria, cores e expressão artística.",
+        materiais: "Formas de gelo com água e corante alimentício, palitos de sorvete, papel kraft grande.",
+        passo: "Congele a água colorida com os palitos. Estenda o papel no chão e deixe que as crianças 'risquem' e pintem o papel conforme o gelo derrete."
+      }
+    ];
+
+    function renderAtividades(lista) {
+      const grid = document.getElementById('grid-atividades');
+      grid.innerHTML = lista.map(a => `
+        <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-rose-500 hover:shadow-lg transition">
+          <div class="flex justify-between items-start mb-2">
+            <span class="bg-rose-100 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-full">${a.faixa.replace('-', ' a ')}</span>
+            <span class="text-xs font-mono bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${a.bncc}</span>
+          </div>
+          <h3 class="text-lg font-bold text-slate-800 mb-2">${a.titulo}</h3>
+          <p class="text-xs text-slate-600 mb-3"><strong class="text-rose-600">Objetivo:</strong> ${a.objetivo}</p>
+          <div class="bg-rose-50 p-2.5 rounded-lg mb-3">
+            <p class="text-xs text-slate-700"><strong>Materiais:</strong> ${a.materiais}</p>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed mb-4"><strong>Passo a Passo:</strong> ${a.passo}</p>
+          <button onclick="window.print()" class="text-xs text-rose-500 hover:text-rose-700 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-print"></i> Imprimir Plano
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function filterAge(faixa) {
+      document.querySelectorAll('.age-btn').forEach(btn => {
+        btn.classList.remove('bg-rose-500', 'text-white');
+        btn.classList.add('bg-rose-100', 'text-rose-700');
+      });
+      event.target.classList.remove('bg-rose-100', 'text-rose-700');
+      event.target.classList.add('bg-rose-500', 'text-white');
+
+      if(faixa === 'todas') renderAtividades(atividades);
+      else renderAtividades(atividades.filter(a => a.faixa === faixa));
+    }
+
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-rose-600', 'text-white');
+        btn.classList.add('bg-white', 'text-rose-600');
+      });
+
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      document.getElementById(`btn-${tab}`).classList.remove('bg-white', 'text-rose-600');
+      document.getElementById(`btn-${tab}`).classList.add('bg-rose-600', 'text-white');
+    }
+
+    function addRoutineLog(e) {
+      e.preventDefault();
+      const name = document.getElementById('child-name').value;
+      const food = document.getElementById('food-status').value;
+      const sleep = document.getElementById('sleep-status').value;
+      const diaper = document.getElementById('diaper-status').value;
+      const note = document.getElementById('routine-note').value;
+
+      const output = `🍼 **DIÁRIO DE ROTINA - ${name.toUpperCase()}**
+----------------------------------------
+🥣 **Alimentação:** ${food}
+😴 **Sono:** ${sleep}
+🧷 **Fralda/Higiene:** ${diaper}
+📝 **Observações do Dia:** ${note || "Dia tranquilo e de bastante aprendizado."}`;
+
+      document.getElementById('routine-text').innerText = output;
+      document.getElementById('routine-output').classList.remove('hidden');
+    }
+
+    const reportPhrases = {
+      socioemocional: {
+        autonomo: "Demonstra excelente adaptação ao ambiente do berçário. Interage de forma harmoniosa com os colegas e busca a professora para compartilhar momentos de descoberta com confiança.",
+        desenvolvimento: "Está em processo constante de socialização. Demonstra interesse pelos colegas e responde positivamente aos estímulos de interação e momentos de rotina coletiva.",
+        inicial: "Encontra-se em fase de adaptação ao ambiente e aos momentos de transição de rotina. Necessita do apoio do educador para sentir-se seguro na realização das propostas."
+      },
+      motor: {
+        autonomo: "Aapresenta ótimo controle motor amplo. Explora o espaço com vivacidade, engatinha/caminha com firmeza e demonstra curiosidade na manipulação de pequenos objetos.",
+        desenvolvimento: "Vem desenvolvendo gradativamente o equilíbrio e a coordenação motora. Realiza tentativas ativas de transição postural com o auxílio do educador.",
+        inicial: "Recebe incentivo constante para o fortalecimento da musculatura e controle corporal através do posicionamento de bruços (Tummy Time) e móbiles sensoriais."
+      },
+      linguagem: {
+        autonomo: "Expressa suas vontades e sentimentos com clareza através de balbucios, gestos ou pequenas palavras. Atenta-se às histórias e canções apresentadas na roda.",
+        desenvolvimento: "Demonstra boa escuta atenta durante conversas e canções. Expressa necessidades primárias por meio de expressões faciais, apontamentos e balbucios.",
+        inicial: "Responde aos estímulos sonoros e visuais do ambiente com sorrisos e contato visual direto, estando em fase de ampliação do seu repertório expressivo."
+      }
+    };
+
+    function generateReport() {
+      const aspect = document.getElementById('report-aspect').value;
+      const level = document.getElementById('report-level').value;
+      const phrase = reportPhrases[aspect][level];
+
+      document.getElementById('report-text').innerText = phrase;
+      document.getElementById('report-output').classList.remove('hidden');
+    }
+
+    function copyReport() {
+      const text = document.getElementById('report-text').innerText;
+      navigator.clipboard.writeText(text);
+      alert("Texto copiado com sucesso!");
+    }
+
+    // Render inicial
+    renderAtividades(atividades);
+  </script>
+</body>
+</html>
